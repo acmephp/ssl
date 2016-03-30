@@ -14,6 +14,8 @@ namespace AcmePhp\Ssl\Generator;
 use AcmePhp\Ssl\Exception\KeyPairGenerationException;
 use AcmePhp\Ssl\Factory\KeyPairFactory;
 use AcmePhp\Ssl\KeyPair;
+use AcmePhp\Ssl\PrivateKey;
+use AcmePhp\Ssl\PublicKey;
 use Webmozart\Assert\Assert;
 
 /**
@@ -23,17 +25,6 @@ use Webmozart\Assert\Assert;
  */
 class KeyPairGenerator
 {
-    /** @var KeyPairFactory */
-    private $keyPairFactory;
-
-    /**
-     * @param KeyPairFactory $keyPairFactory
-     */
-    public function __construct(KeyPairFactory $keyPairFactory = null)
-    {
-        $this->keyPairFactory = $keyPairFactory ?: new KeyPairFactory();
-    }
-
     /**
      * Generate KeyPair.
      *
@@ -65,6 +56,9 @@ class KeyPairGenerator
 
         $details = openssl_pkey_get_details($key);
 
-        return $this->keyPairFactory->createKeyPair($details['key'], $privateKey);
+        return new KeyPair(
+            new PublicKey($details['key']),
+            new PrivateKey($privateKey)
+        );
     }
 }

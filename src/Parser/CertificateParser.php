@@ -15,6 +15,7 @@ use AcmePhp\Ssl\Certificate;
 use AcmePhp\Ssl\Exception\CertificateParsingException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Webmozart\Assert\Assert;
 
 /**
  * Parse certificate to extract metadata.
@@ -23,19 +24,6 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
  */
 class CertificateParser
 {
-    /** @var PropertyAccessor */
-    private $accessor;
-
-    /**
-     * CertificateParser constructor.
-     *
-     * @param PropertyAccessor $accessor
-     */
-    public function __construct(PropertyAccessor $accessor = null)
-    {
-        $this->accessor = $accessor ?: PropertyAccess::createPropertyAccessor();
-    }
-
     /**
      * Parse the certificate.
      *
@@ -52,24 +40,48 @@ class CertificateParser
             );
         }
 
-        return new Certificate(
-            $this->accessor->getValue($rawData, '[subject][CN]'),
-            $this->accessor->getValue($rawData, '[issuer][CN]'),
-            $this->accessor->getValue($rawData, '[subject]') === $this->accessor->getValue($rawData, '[issuer]'),
-            new \DateTime('@'.$this->accessor->getValue($rawData, '[validFrom_time_t]')),
-            new \DateTime('@'.$this->accessor->getValue($rawData, '[validTo_time_t]')),
-            $this->accessor->getValue($rawData, '[serialNumber]'),
-            array_map(
+        if (!isset($rawData['subject']['CN'])) {
+            throw new CertificateParsingException('Missing expected key "subject.cn" in certificate');
+        }
+        if (!isset($rawData['issuer']['CN'])) {
+            throw new CertificateParsingException('Missing expected key "issuer.cn" in certificate');
+        }
+        if (!isset($rawData['serialNumber'])) {
+            throw new CertificateParsingException('Missing expected key "serialNumber" in certificate');
+        }
+        if (!isset($rawData['validFrom_time_t'])) {
+            throw new CertificateParsingException('Missing expected key "validFrom_time_t" in certificate');
+        }
+        if (!isset($rawData['validTo_time_t'])) {
+            throw new CertificateParsingException('Missing expected key "validTo_time_t" in certificate');
+        }
+
+        $subjectAlternativeName = [];
+        if (isset($rawData['extensions']['subjectAltName'])) {
+            $subjectAlternativeName = array_map(
                 function ($item) {
                     return explode(':', trim($item), 2)[1];
                 },
                 array_filter(
-                    explode(',', $this->accessor->getValue($rawData, '[extensions][subjectAltName]')),
+                    explode(
+                        ',',
+                        $rawData['extensions']['subjectAltName']
+                    ),
                     function ($item) {
                         return false !== strpos($item, ':');
                     }
                 )
-            )
+            );
+        }
+
+        return new Certificate(
+            $rawData['subject']['CN'],
+            $rawData['issuer']['CN'],
+            $rawData['subject'] === $rawData['issuer'],
+            new \DateTime('@'.$rawData['validFrom_time_t']),
+            new \DateTime('@'.$rawData['validTo_time_t']),
+            $rawData['serialNumber'],
+            $subjectAlternativeName
         );
     }
 }

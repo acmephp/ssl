@@ -11,6 +11,8 @@
 
 namespace AcmePhp\Ssl;
 
+use Webmozart\Assert\Assert;
+
 /**
  * Represent a certificate.
  *
@@ -20,35 +22,27 @@ class Certificate
 {
     /** @var string */
     private $subject;
-
     /** @var string */
     private $issuer;
-
     /** @var bool */
     private $selfSigned;
-    /**
-     * @var \DateTime
-     */
+    /** @var \DateTime */
     private $validFrom;
-    /**
-     * @var \DateTime
-     */
+    /** @var \DateTime */
     private $validTo;
-
     /** @var string */
     private $serialNumber;
-
     /** @var array */
     private $subjectAlternativeNames;
 
     /**
-     * @param string    $subject
-     * @param string    $issuer
-     * @param bool      $selfSigned
+     * @param string $subject
+     * @param string $issuer
+     * @param bool $selfSigned
      * @param \DateTime $validFrom
      * @param \DateTime $validTo
-     * @param string    $serialNumber
-     * @param array     $subjectAlternativeNames
+     * @param string $serialNumber
+     * @param array $subjectAlternativeNames
      */
     public function __construct(
         $subject,
@@ -59,6 +53,15 @@ class Certificate
         $serialNumber = null,
         array $subjectAlternativeNames = []
     ) {
+        Assert::stringNotEmpty($subject, __CLASS__.'::$subject expected a non empty string. Got: %s');
+        Assert::string($issuer, __CLASS__.'::$issuer expected a string. Got: %s');
+        Assert::boolean($selfSigned, __CLASS__.'::$selfSigned expected a boolean. Got: %s');
+        Assert::string($serialNumber, __CLASS__.'::$serialNumber expected a string. Got: %s');
+        Assert::allStringNotEmpty(
+            $subjectAlternativeNames,
+            __CLASS__.'::$subjectAlternativeNames expected a array of non empty string. Got: %s'
+        );
+
         $this->subject = $subject;
         $this->issuer = $issuer;
         $this->selfSigned = $selfSigned;

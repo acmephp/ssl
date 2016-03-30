@@ -6,10 +6,10 @@
     "homepage": "https://github.com/acmephp/ssl",
     "keywords": [
         "certificate",
-        "letencrypt",
         "https",
         "acmephp",
         "ssl",
+        "openssl",
         "CSR",
         "x509"
     ],
@@ -37,8 +37,7 @@
     "require": {
         "php": ">=5.5.0",
         "ext-openssl": "*",
-        "webmozart/assert": "^1.0",
-        "symfony/property-access": "^3.0"
+        "webmozart/assert": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^4.8.22",
