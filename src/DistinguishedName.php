@@ -83,7 +83,7 @@ class DistinguishedName
         $this->organizationName = $organizationName;
         $this->organizationalUnitName = $organizationalUnitName;
         $this->emailAddress = $emailAddress;
-        $this->subjectAlternativeNames = array_unique(array_merge([$commonName], $subjectAlternativeNames));
+        $this->subjectAlternativeNames = array_diff(array_unique($subjectAlternativeNames), [$commonName]);
     }
 
     /**

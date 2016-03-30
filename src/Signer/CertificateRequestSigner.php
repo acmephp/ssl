@@ -11,6 +11,7 @@
 
 namespace AcmePhp\Ssl\Signer;
 
+use AcmePhp\Ssl\CertificateRequest;
 use AcmePhp\Ssl\DistinguishedName;
 use AcmePhp\Ssl\Exception\CSRSigninException;
 use AcmePhp\Ssl\KeyPair;
@@ -30,14 +31,9 @@ class CertificateRequestSigner
      *
      * @return string
      */
-    public function signCertificateRequest(DistinguishedName $distinguishedName, KeyPair $keyPair)
+    public function signCertificateRequest(CertificateRequest $certificateRequest)
     {
-        if (1 < count($distinguishedName->getSubjectAlternativeNames())) {
-            $csrObject = $this->createCsrWithSANsObject($distinguishedName, $keyPair);
-        } else {
-            $csrObject = $this->createCsrObject($distinguishedName, $keyPair);
-        }
-
+        $csrObject = $this->createCsrWithSANsObject($certificateRequest);
         if (!$csrObject) {
             throw new CSRSigninException(
                 sprintf('OpenSSL CSR signing failed with error: %s', openssl_error_string())
@@ -52,12 +48,11 @@ class CertificateRequestSigner
     /**
      * Generate a CSR object with SANs from the given distinguishedName and keyPair.
      *
-     * @param DistinguishedName $distinguishedName
-     * @param KeyPair           $keyPair
+     * @param CertificateRequest $certificateRequest
      *
      * @return mixed
      */
-    protected function createCsrWithSANsObject(DistinguishedName $distinguishedName, KeyPair $keyPair)
+    protected function createCsrWithSANsObject(CertificateRequest $certificateRequest)
     {
         $sslConfigTemplate = <<<'EOL'
 [ req ]
@@ -73,7 +68,12 @@ subjectAltName = @req_subject_alt_name
 EOL;
         $sslConfigDomains = [];
 
-        foreach (array_values($distinguishedName->getSubjectAlternativeNames()) as $index => $domain) {
+        $distinguishedName = $certificateRequest->getDistinguishedName();
+        $domains = array_merge(
+            [$distinguishedName->getCommonName()],
+            $distinguishedName->getSubjectAlternativeNames()
+        );
+        foreach (array_values($domains) as $index => $domain) {
             $sslConfigDomains[] = 'DNS.'.($index + 1).' = '.$domain;
         }
 
@@ -83,38 +83,19 @@ EOL;
         try {
             file_put_contents($sslConfigFile, $sslConfigContent);
 
-            $resource = $keyPair->getPrivateKey()->getResource();
+            $resource = $certificateRequest->getKeyPair()->getPrivateKey()->getResource();
 
             return openssl_csr_new(
                 $this->getCSRPayload($distinguishedName),
                 $resource,
                 [
                     'digest_alg' => 'sha256',
-                    'config' => $sslConfigFile,
+                    'config'     => $sslConfigFile,
                 ]
             );
         } finally {
             unlink($sslConfigFile);
         }
-    }
-
-    /**
-     * Generate a CSR without SANs from the given distinguishedName and keyPair.
-     *
-     * @param DistinguishedName $distinguishedName
-     * @param KeyPair           $keyPair
-     *
-     * @return string
-     */
-    protected function createCsrObject(DistinguishedName $distinguishedName, KeyPair $keyPair)
-    {
-        $resource = $keyPair->getPrivateKey()->getResource();
-
-        return openssl_csr_new(
-            $this->getCSRPayload($distinguishedName),
-            $resource,
-            ['digest_alg' => 'sha256']
-        );
     }
 
     /**

@@ -9,20 +9,22 @@
  * file that was distributed with this source code.
  */
 
-namespace AcmePhp\Ssl;
+namespace AcmePhp\Ssl\Formatter;
+
+use AcmePhp\Ssl\CertificateResponse;
 
 /**
- * Represent a SSL Public key.
+ * Format the base certificate.
  *
  * @author Jérémy Derussé <jeremy@derusse.com>
  */
-class PublicKey extends Key
+class CertificateFormatter implements FormatterInterface
 {
     /**
-     *  {@inheritdoc}
+     * {@inheritdoc}
      */
-    public function getResource()
+    public function format(CertificateResponse $certificateResponse)
     {
-        return openssl_pkey_get_public($this->keyPEM);
+        return $certificateResponse->getCertificate()->getPEM();
     }
 }

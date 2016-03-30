@@ -23,16 +23,16 @@ abstract class Key
     /**
      * @var string
      */
-    protected $key;
+    protected $keyPEM;
 
     /**
-     * @param string $key
+     * @param string $keyPEM
      */
-    public function __construct($key)
+    public function __construct($keyPEM)
     {
-        Assert::stringNotEmpty($key, __CLASS__.'::$key should be an empty string. Got %s');
+        Assert::stringNotEmpty($keyPEM, __CLASS__.'::$keyPEM should not be an empty string. Got %s');
 
-        $this->key = $key;
+        $this->keyPEM = $keyPEM;
     }
 
     /**
@@ -40,7 +40,7 @@ abstract class Key
      */
     public function getPEM()
     {
-        return $this->key;
+        return $this->keyPEM;
     }
 
     /**

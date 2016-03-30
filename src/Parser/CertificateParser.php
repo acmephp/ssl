@@ -13,9 +13,7 @@ namespace AcmePhp\Ssl\Parser;
 
 use AcmePhp\Ssl\Certificate;
 use AcmePhp\Ssl\Exception\CertificateParsingException;
-use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
-use Webmozart\Assert\Assert;
+use AcmePhp\Ssl\ParsedCertificate;
 
 /**
  * Parse certificate to extract metadata.
@@ -27,13 +25,13 @@ class CertificateParser
     /**
      * Parse the certificate.
      *
-     * @param string $content
+     * @param Certificate $certificate
      *
-     * @return Certificate
+     * @return ParsedCertificate
      */
-    public function parse($content)
+    public function parse(Certificate $certificate)
     {
-        $rawData = openssl_x509_parse($content);
+        $rawData = openssl_x509_parse($certificate->getPEM());
         if (!$rawData) {
             throw new CertificateParsingException(
                 sprintf('Fail to parse certificate with error: %s', openssl_error_string())
@@ -74,7 +72,7 @@ class CertificateParser
             );
         }
 
-        return new Certificate(
+        return new ParsedCertificate(
             $rawData['subject']['CN'],
             $rawData['issuer']['CN'],
             $rawData['subject'] === $rawData['issuer'],

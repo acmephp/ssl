@@ -13,6 +13,7 @@ namespace AcmePhp\Ssl\Tests\Factory;
 
 use AcmePhp\Ssl\Certificate;
 use AcmePhp\Ssl\KeyPair;
+use AcmePhp\Ssl\ParsedCertificate;
 use AcmePhp\Ssl\Parser\CertificateParser;
 
 class CertificateParserTest extends \PHPUnit_Framework_TestCase
@@ -32,13 +33,14 @@ class CertificateParserTest extends \PHPUnit_Framework_TestCase
      */
     public function test parse raise proper exception()
     {
-        $this->service->parse('Not a cert');
+        $this->service->parse(new Certificate('Not a cert'));
     }
 
     public function test parse returns instance of KeyPair()
     {
         $result = $this->service->parse(
-            '
+            new Certificate(
+                '
 -----BEGIN CERTIFICATE-----
 MIIFkTCCBHmgAwIBAgITAP/g3ErooCmPSlx2kAVx9abKkTANBgkqhkiG9w0BAQsF
 ADAfMR0wGwYDVQQDExRoYXBweSBoYWNrZXIgZmFrZSBDQTAeFw0xNjAzMjUyMjI3
@@ -72,9 +74,10 @@ rfA31vVhnoPUqSbuVJfL5X0a0T0dcOwL3/Vj0gAyZQAzjk1RoQ5POFQoO6QIGOKe
 oVyIb1lpwK0r0vN9y8ns80MP3HtjPYtARWJ9z9P4N+guHZdnbw==
 -----END CERTIFICATE-----
 '
+            )
         );
 
-        $this->assertInstanceOf(Certificate::class, $result);
+        $this->assertInstanceOf(ParsedCertificate::class, $result);
         $this->assertInstanceOf(\DateTime::class, $result->getValidFrom());
         $this->assertSame('20160325', $result->getValidFrom()->format('Ymd'));
         $this->assertInstanceOf(\DateTime::class, $result->getValidTo());

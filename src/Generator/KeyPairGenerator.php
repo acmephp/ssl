@@ -12,7 +12,6 @@
 namespace AcmePhp\Ssl\Generator;
 
 use AcmePhp\Ssl\Exception\KeyPairGenerationException;
-use AcmePhp\Ssl\Factory\KeyPairFactory;
 use AcmePhp\Ssl\KeyPair;
 use AcmePhp\Ssl\PrivateKey;
 use AcmePhp\Ssl\PublicKey;

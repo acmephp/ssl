@@ -11,7 +11,7 @@
 
 namespace AcmePhp\Ssl\Tests\Factory;
 
-use AcmePhp\Ssl\Certificate;
+use AcmePhp\Ssl\CertificateRequest;
 use AcmePhp\Ssl\DistinguishedName;
 use AcmePhp\Ssl\Generator\KeyPairGenerator;
 use AcmePhp\Ssl\Signer\CertificateRequestSigner;
@@ -36,20 +36,22 @@ class CertificateRequestSignerTest extends \PHPUnit_Framework_TestCase
         );
         $dummyKeyPair = (new KeyPairGenerator())->generateKeyPair(1024);
 
-        $result = $this->service->signCertificateRequest($dummyDistinguishedName, $dummyKeyPair);
+        $result = $this->service->signCertificateRequest(
+            new CertificateRequest($dummyDistinguishedName, $dummyKeyPair)
+        );
         $this->assertInternalType('string', $result);
         $this->assertContains('-----BEGIN CERTIFICATE REQUEST-----', $result);
 
         $csrResult = openssl_csr_get_subject($result, false);
         $this->assertSame(
             [
-                'commonName' => 'acmephp.com',
-                'countryName' => 'FR',
-                'stateOrProvinceName' => 'france',
-                'localityName' => 'Paris',
-                'organizationName' => 'acme',
+                'commonName'             => 'acmephp.com',
+                'countryName'            => 'FR',
+                'stateOrProvinceName'    => 'france',
+                'localityName'           => 'Paris',
+                'organizationName'       => 'acme',
                 'organizationalUnitName' => 'IT',
-                'emailAddress' => 'qa@acmephp.com',
+                'emailAddress'           => 'qa@acmephp.com',
 
             ],
             $csrResult
@@ -63,17 +65,15 @@ class CertificateRequestSignerTest extends \PHPUnit_Framework_TestCase
         );
         $dummyKeyPair = (new KeyPairGenerator())->generateKeyPair(1024);
 
-        $result = $this->service->signCertificateRequest($dummyDistinguishedName, $dummyKeyPair);
+        $result = $this->service->signCertificateRequest(
+            new CertificateRequest($dummyDistinguishedName, $dummyKeyPair)
+        );
         $this->assertInternalType('string', $result);
         $this->assertContains('-----BEGIN CERTIFICATE REQUEST-----', $result);
-
         $csrResult = openssl_csr_get_subject($result, false);
         $this->assertSame(
             [
                 'commonName' => 'acmephp.com',
-                'countryName' => 'AU',
-                'stateOrProvinceName' => 'Some-State',
-                'organizationName' => 'Internet Widgits Pty Ltd',
 
             ],
             $csrResult
@@ -88,20 +88,22 @@ class CertificateRequestSignerTest extends \PHPUnit_Framework_TestCase
         );
         $dummyKeyPair = (new KeyPairGenerator())->generateKeyPair(1024);
 
-        $result = $this->service->signCertificateRequest($dummyDistinguishedName, $dummyKeyPair);
+        $result = $this->service->signCertificateRequest(
+            new CertificateRequest($dummyDistinguishedName, $dummyKeyPair)
+        );
         $this->assertInternalType('string', $result);
         $this->assertContains('-----BEGIN CERTIFICATE REQUEST-----', $result);
 
         $csrResult = openssl_csr_get_subject($result, false);
         $this->assertSame(
             [
-                'commonName' => 'acmephp.com',
-                'countryName' => 'FR',
-                'stateOrProvinceName' => 'france',
-                'localityName' => 'Paris',
-                'organizationName' => 'acme',
+                'commonName'             => 'acmephp.com',
+                'countryName'            => 'FR',
+                'stateOrProvinceName'    => 'france',
+                'localityName'           => 'Paris',
+                'organizationName'       => 'acme',
                 'organizationalUnitName' => 'IT',
-                'emailAddress' => 'qa@acmephp.com',
+                'emailAddress'           => 'qa@acmephp.com',
 
             ],
             $csrResult

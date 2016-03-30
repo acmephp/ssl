@@ -23,6 +23,6 @@ class PrivateKey extends Key
      */
     public function getResource()
     {
-        return openssl_pkey_get_private($this->key);
+        return openssl_pkey_get_private($this->keyPEM);
     }
 }
