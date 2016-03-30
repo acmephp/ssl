@@ -43,13 +43,37 @@ class CertificateRequestSignerTest extends \PHPUnit_Framework_TestCase
         $csrResult = openssl_csr_get_subject($result, false);
         $this->assertSame(
             [
-                'commonName'             => 'acmephp.com',
-                'countryName'            => 'FR',
-                'stateOrProvinceName'    => 'france',
-                'localityName'           => 'Paris',
-                'organizationName'       => 'acme',
+                'commonName' => 'acmephp.com',
+                'countryName' => 'FR',
+                'stateOrProvinceName' => 'france',
+                'localityName' => 'Paris',
+                'organizationName' => 'acme',
                 'organizationalUnitName' => 'IT',
-                'emailAddress'           => 'qa@acmephp.com',
+                'emailAddress' => 'qa@acmephp.com',
+
+            ],
+            $csrResult
+        );
+    }
+
+    public function test signCertificateRequest use default values()
+    {
+        $dummyDistinguishedName = new DistinguishedName(
+            'acmephp.com'
+        );
+        $dummyKeyPair = (new KeyPairGenerator())->generateKeyPair(1024);
+
+        $result = $this->service->signCertificateRequest($dummyDistinguishedName, $dummyKeyPair);
+        $this->assertInternalType('string', $result);
+        $this->assertContains('-----BEGIN CERTIFICATE REQUEST-----', $result);
+
+        $csrResult = openssl_csr_get_subject($result, false);
+        $this->assertSame(
+            [
+                'commonName' => 'acmephp.com',
+                'countryName' => 'AU',
+                'stateOrProvinceName' => 'Some-State',
+                'organizationName' => 'Internet Widgits Pty Ltd',
 
             ],
             $csrResult
@@ -71,13 +95,13 @@ class CertificateRequestSignerTest extends \PHPUnit_Framework_TestCase
         $csrResult = openssl_csr_get_subject($result, false);
         $this->assertSame(
             [
-                'commonName'             => 'acmephp.com',
-                'countryName'            => 'FR',
-                'stateOrProvinceName'    => 'france',
-                'localityName'           => 'Paris',
-                'organizationName'       => 'acme',
+                'commonName' => 'acmephp.com',
+                'countryName' => 'FR',
+                'stateOrProvinceName' => 'france',
+                'localityName' => 'Paris',
+                'organizationName' => 'acme',
                 'organizationalUnitName' => 'IT',
-                'emailAddress'           => 'qa@acmephp.com',
+                'emailAddress' => 'qa@acmephp.com',
 
             ],
             $csrResult

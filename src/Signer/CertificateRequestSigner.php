@@ -90,7 +90,7 @@ EOL;
                 $resource,
                 [
                     'digest_alg' => 'sha256',
-                    'config'     => $sslConfigFile,
+                    'config' => $sslConfigFile,
                 ]
             );
         } finally {
@@ -126,14 +126,28 @@ EOL;
      */
     private function getCSRPayload(DistinguishedName $distinguishedName)
     {
-        return [
-            'commonName'             => $distinguishedName->getCommonName(),
-            'countryName'            => $distinguishedName->getCountryName(),
-            'stateOrProvinceName'    => $distinguishedName->getStateOrProvinceName(),
-            'localityName'           => $distinguishedName->getLocalityName(),
-            'organizationName'       => $distinguishedName->getOrganizationName(),
-            'organizationalUnitName' => $distinguishedName->getOrganizationalUnitName(),
-            'emailAddress'           => $distinguishedName->getEmailAddress(),
+        $payload = [
+            'commonName' => $distinguishedName->getCommonName(),
         ];
+        if (null !== $countryName = $distinguishedName->getCountryName()) {
+            $payload['countryName'] = $countryName;
+        }
+        if (null !== $stateOrProvinceName = $distinguishedName->getStateOrProvinceName()) {
+            $payload['stateOrProvinceName'] = $stateOrProvinceName;
+        }
+        if (null !== $localityName = $distinguishedName->getLocalityName()) {
+            $payload['localityName'] = $localityName;
+        }
+        if (null !== $OrganizationName = $distinguishedName->getOrganizationName()) {
+            $payload['organizationName'] = $OrganizationName;
+        }
+        if (null !== $organizationUnitName = $distinguishedName->getOrganizationalUnitName()) {
+            $payload['organizationalUnitName'] = $organizationUnitName;
+        }
+        if (null !== $emailAddress = $distinguishedName->getEmailAddress()) {
+            $payload['emailAddress'] = $emailAddress;
+        }
+
+        return $payload;
     }
 }

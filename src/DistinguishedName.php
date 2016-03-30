@@ -56,27 +56,21 @@ class DistinguishedName
      */
     public function __construct(
         $commonName,
-        $countryName,
-        $stateOrProvinceName,
-        $localityName,
-        $organizationName,
-        $organizationalUnitName,
-        $emailAddress,
-        array $subjectAlternativeNames
+        $countryName = null,
+        $stateOrProvinceName = null,
+        $localityName = null,
+        $organizationName = null,
+        $organizationalUnitName = null,
+        $emailAddress = null,
+        array $subjectAlternativeNames = []
     ) {
         Assert::stringNotEmpty($commonName, __CLASS__.'::$commonName expected a non empty string. Got: %s');
-        Assert::stringNotEmpty($countryName, __CLASS__.'::$countryName expected a non empty string. Got: %s');
-        Assert::stringNotEmpty(
-            $stateOrProvinceName,
-            __CLASS__.'::$stateOrProvinceName expected a non empty string. Got: %s'
-        );
-        Assert::stringNotEmpty($localityName, __CLASS__.'::$localityName expected a non empty string. Got: %s');
-        Assert::stringNotEmpty($organizationName, __CLASS__.'::$organizationName expected a non empty string. Got: %s');
-        Assert::stringNotEmpty(
-            $organizationalUnitName,
-            __CLASS__.'::$organizationalUnitName expected a non empty string. Got: %s'
-        );
-        Assert::stringNotEmpty($emailAddress, __CLASS__.'::$emailAddress expected a non empty string. Got: %s');
+        Assert::nullOrString($countryName, __CLASS__.'::$countryName expected a string. Got: %s');
+        Assert::nullOrString($stateOrProvinceName, __CLASS__.'::$stateOrProvinceName expected a string. Got: %s');
+        Assert::nullOrString($localityName, __CLASS__.'::$localityName expected a string. Got: %s');
+        Assert::nullOrString($organizationName, __CLASS__.'::$organizationName expected a string. Got: %s');
+        Assert::nullOrString($organizationalUnitName, __CLASS__.'::$organizationalUnitName expected a string. Got: %s');
+        Assert::nullOrString($emailAddress, __CLASS__.'::$emailAddress expected a string. Got: %s');
         Assert::allStringNotEmpty(
             $subjectAlternativeNames,
             __CLASS__.'::$subjectAlternativeNames expected an array of non empty string. Got: %s'
