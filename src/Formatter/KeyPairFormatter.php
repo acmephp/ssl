@@ -25,6 +25,6 @@ class KeyPairFormatter implements FormatterInterface
      */
     public function format(CertificateResponse $certificateResponse)
     {
-        return $certificateResponse->getCertificateRequest()->getKeyPair()->getPrivateKey()->getPEM();
+        return trim($certificateResponse->getCertificateRequest()->getKeyPair()->getPrivateKey()->getPEM()).self::SEPARATOR;
     }
 }

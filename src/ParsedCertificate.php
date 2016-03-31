@@ -20,6 +20,8 @@ use Webmozart\Assert\Assert;
  */
 class ParsedCertificate
 {
+    /** @var Certificate */
+    private $source;
     /** @var string */
     private $subject;
 
@@ -42,15 +44,17 @@ class ParsedCertificate
     private $subjectAlternativeNames;
 
     /**
-     * @param string    $subject
-     * @param string    $issuer
-     * @param bool      $selfSigned
-     * @param \DateTime $validFrom
-     * @param \DateTime $validTo
-     * @param string    $serialNumber
-     * @param array     $subjectAlternativeNames
+     * @param Certificate $source
+     * @param string      $subject
+     * @param string      $issuer
+     * @param bool        $selfSigned
+     * @param \DateTime   $validFrom
+     * @param \DateTime   $validTo
+     * @param string      $serialNumber
+     * @param array       $subjectAlternativeNames
      */
     public function __construct(
+        Certificate $source,
         $subject,
         $issuer = null,
         $selfSigned = true,
@@ -68,6 +72,7 @@ class ParsedCertificate
             __CLASS__.'::$subjectAlternativeNames expected a array of non empty string. Got: %s'
         );
 
+        $this->source = $source;
         $this->subject = $subject;
         $this->issuer = $issuer;
         $this->selfSigned = $selfSigned;
@@ -75,6 +80,14 @@ class ParsedCertificate
         $this->validTo = $validTo;
         $this->serialNumber = $serialNumber;
         $this->subjectAlternativeNames = $subjectAlternativeNames;
+    }
+
+    /**
+     * @return Certificate
+     */
+    public function getSource()
+    {
+        return $this->source;
     }
 
     /**

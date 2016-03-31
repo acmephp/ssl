@@ -12,7 +12,6 @@
 namespace AcmePhp\Ssl\Tests\Formatter;
 
 use AcmePhp\Ssl\Certificate;
-use AcmePhp\Ssl\CertificateChain;
 use AcmePhp\Ssl\CertificateRequest;
 use AcmePhp\Ssl\CertificateResponse;
 use AcmePhp\Ssl\Formatter\IssuerChainFormatter;
@@ -31,20 +30,20 @@ class IssuerChainFormatterTest extends \PHPUnit_Framework_TestCase
 
     public function test format use the certificate PEM()
     {
-        $dummyCertificate1 = uniqid();
-        $dummyCertificate2 = uniqid();
+        $dummyCertificatePem = uniqid()."\n";
+        $dummyIssuer1Pem = uniqid()."\n";
+        $dummyIssuer2Pem = uniqid()."\n";
 
         $dummyRequest = $this->prophesize(CertificateRequest::class)->reveal();
-        $dummyCertificate = $this->prophesize(Certificate::class)->reveal();
-
-        $dummyIssuerChain = new CertificateChain(
-            new Certificate($dummyCertificate1),
-            new CertificateChain(new Certificate($dummyCertificate2))
+        $dummyCertificate = new Certificate(
+            $dummyCertificatePem,
+            new Certificate($dummyIssuer1Pem, new Certificate($dummyIssuer2Pem))
         );
-        $dummyResponse = new CertificateResponse($dummyRequest, $dummyIssuerChain, $dummyCertificate);
+
+        $dummyResponse = new CertificateResponse($dummyRequest, $dummyCertificate);
 
         $result = $this->service->format($dummyResponse);
 
-        $this->assertSame($dummyCertificate1.$dummyCertificate2, $result);
+        $this->assertSame($dummyIssuer1Pem.$dummyIssuer2Pem, $result);
     }
 }

@@ -23,14 +23,19 @@ class Certificate
     /** @var string */
     private $certificatePEM;
 
+    /** @var Certificate */
+    private $issuerCertificate;
+
     /**
-     * @param string $certificatePEM
+     * @param string      $certificatePEM
+     * @param Certificate $issuerCertificate
      */
-    public function __construct($certificatePEM)
+    public function __construct($certificatePEM, Certificate $issuerCertificate = null)
     {
         Assert::stringNotEmpty($certificatePEM, __CLASS__.'::$certificatePEM should not be an empty string. Got %s');
 
         $this->certificatePEM = $certificatePEM;
+        $this->issuerCertificate = $issuerCertificate;
     }
 
     /**
@@ -39,5 +44,13 @@ class Certificate
     public function getPEM()
     {
         return $this->certificatePEM;
+    }
+
+    /**
+     * @return Certificate
+     */
+    public function getIssuerCertificate()
+    {
+        return $this->issuerCertificate;
     }
 }

@@ -41,8 +41,8 @@ class CombinedFormatterTest extends \PHPUnit_Framework_TestCase
 
     public function test format use the certificate PEM()
     {
-        $dummyFullChainFormat = uniqid();
-        $dummyKeyPairFormat = uniqid();
+        $dummyFullChainFormat = uniqid()."\n";
+        $dummyKeyPairFormat = uniqid()."\n";
 
         $dummyResponse = $this->prophesize(CertificateResponse::class)->reveal();
 

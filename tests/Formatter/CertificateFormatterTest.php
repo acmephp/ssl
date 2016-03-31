@@ -12,7 +12,6 @@
 namespace AcmePhp\Ssl\Tests\Formatter;
 
 use AcmePhp\Ssl\Certificate;
-use AcmePhp\Ssl\CertificateChain;
 use AcmePhp\Ssl\CertificateRequest;
 use AcmePhp\Ssl\CertificateResponse;
 use AcmePhp\Ssl\Formatter\CertificateFormatter;
@@ -31,13 +30,12 @@ class CertificateFormatterTest extends \PHPUnit_Framework_TestCase
 
     public function test format use the certificate PEM()
     {
-        $dummyPEM = uniqid();
+        $dummyPEM = uniqid()."\n";
 
         $dummyRequest = $this->prophesize(CertificateRequest::class)->reveal();
-        $dummyIssuerChain = $this->prophesize(CertificateChain::class)->reveal();
         $dummyCertificate = new Certificate($dummyPEM);
 
-        $dummyResponse = new CertificateResponse($dummyRequest, $dummyIssuerChain, $dummyCertificate);
+        $dummyResponse = new CertificateResponse($dummyRequest, $dummyCertificate);
 
         $result = $this->service->format($dummyResponse);
 

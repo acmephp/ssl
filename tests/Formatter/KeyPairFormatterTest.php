@@ -12,7 +12,6 @@
 namespace AcmePhp\Ssl\Tests\Formatter;
 
 use AcmePhp\Ssl\Certificate;
-use AcmePhp\Ssl\CertificateChain;
 use AcmePhp\Ssl\CertificateRequest;
 use AcmePhp\Ssl\CertificateResponse;
 use AcmePhp\Ssl\DistinguishedName;
@@ -35,9 +34,8 @@ class KeyPairFormatterTest extends \PHPUnit_Framework_TestCase
 
     public function test format use the certificate PEM()
     {
-        $dummyPrivateKeyPEM = uniqid();
+        $dummyPrivateKeyPEM = uniqid()."\n";
 
-        $dummyIssuerChain = $this->prophesize(CertificateChain::class)->reveal();
         $dummyCertificate = $this->prophesize(Certificate::class)->reveal();
         $dummyDistinguishedName = $this->prophesize(DistinguishedName::class)->reveal();
         $dummyPublicKey = $this->prophesize(PublicKey::class)->reveal();
@@ -45,7 +43,7 @@ class KeyPairFormatterTest extends \PHPUnit_Framework_TestCase
         $dummyPrivateKey = new PrivateKey($dummyPrivateKeyPEM);
         $dummyKeyPair = new KeyPair($dummyPublicKey, $dummyPrivateKey);
         $dummyRequest = new CertificateRequest($dummyDistinguishedName, $dummyKeyPair);
-        $dummyResponse = new CertificateResponse($dummyRequest, $dummyIssuerChain, $dummyCertificate);
+        $dummyResponse = new CertificateResponse($dummyRequest, $dummyCertificate);
 
         $result = $this->service->format($dummyResponse);
 

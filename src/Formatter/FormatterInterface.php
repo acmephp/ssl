@@ -20,6 +20,8 @@ use AcmePhp\Ssl\CertificateResponse;
  */
 interface FormatterInterface
 {
+    const SEPARATOR = "\n";
+
     /**
      * Format the given certificate response.
      *

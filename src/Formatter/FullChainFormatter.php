@@ -47,11 +47,11 @@ class FullChainFormatter implements FormatterInterface
     public function format(CertificateResponse $certificateResponse)
     {
         return implode(
-            '',
+            self::SEPARATOR,
             [
-                $this->certificateFormatter->format($certificateResponse),
-                $this->issuerChainFormatter->format($certificateResponse),
+                trim($this->certificateFormatter->format($certificateResponse)),
+                trim($this->issuerChainFormatter->format($certificateResponse)),
             ]
-        );
+        ).self::SEPARATOR;
     }
 }

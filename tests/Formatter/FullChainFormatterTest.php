@@ -41,8 +41,8 @@ class FullChainFormatterTest extends \PHPUnit_Framework_TestCase
 
     public function test format use the certificate PEM()
     {
-        $dummyCertificateFormat = uniqid();
-        $dummyIssuerChainFormat = uniqid();
+        $dummyCertificateFormat = uniqid()."\n";
+        $dummyIssuerChainFormat = uniqid()."\n";
 
         $dummyResponse = $this->prophesize(CertificateResponse::class)->reveal();
 

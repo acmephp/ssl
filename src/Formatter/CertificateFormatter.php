@@ -25,6 +25,6 @@ class CertificateFormatter implements FormatterInterface
      */
     public function format(CertificateResponse $certificateResponse)
     {
-        return $certificateResponse->getCertificate()->getPEM();
+        return trim($certificateResponse->getCertificate()->getPEM()).self::SEPARATOR;
     }
 }

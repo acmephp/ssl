@@ -25,13 +25,13 @@ class IssuerChainFormatter implements FormatterInterface
      */
     public function format(CertificateResponse $certificateResponse)
     {
-        $certificateChain = $certificateResponse->getIssuerCertificateChain();
+        $issuerCertificate = $certificateResponse->getCertificate()->getIssuerCertificate();
         $PEMs = [];
-        do {
-            $PEMs[] = $certificateChain->getCertificate()->getPEM();
-            $certificateChain = $certificateChain->getIssuerCertificateChain();
-        } while (null !== $certificateChain);
+        while (null !== $issuerCertificate) {
+            $PEMs[] = trim($issuerCertificate->getPEM());
+            $issuerCertificate = $issuerCertificate->getIssuerCertificate();
+        }
 
-        return implode('', $PEMs);
+        return implode(self::SEPARATOR, $PEMs).self::SEPARATOR;
     }
 }

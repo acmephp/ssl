@@ -73,6 +73,7 @@ class CertificateParser
         }
 
         return new ParsedCertificate(
+            $certificate,
             $rawData['subject']['CN'],
             $rawData['issuer']['CN'],
             $rawData['subject'] === $rawData['issuer'],

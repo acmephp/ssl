@@ -78,6 +78,7 @@ oVyIb1lpwK0r0vN9y8ns80MP3HtjPYtARWJ9z9P4N+guHZdnbw==
         );
 
         $this->assertInstanceOf(ParsedCertificate::class, $result);
+        $this->assertInstanceOf(Certificate::class, $result->getSource());
         $this->assertInstanceOf(\DateTime::class, $result->getValidFrom());
         $this->assertSame('20160325', $result->getValidFrom()->format('Ymd'));
         $this->assertInstanceOf(\DateTime::class, $result->getValidTo());

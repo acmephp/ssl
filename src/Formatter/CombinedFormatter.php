@@ -47,11 +47,11 @@ class CombinedFormatter implements FormatterInterface
     public function format(CertificateResponse $certificateResponse)
     {
         return implode(
-            '',
+            self::SEPARATOR,
             [
-                $this->fullChainFormatter->format($certificateResponse),
-                $this->keyPairFormatter->format($certificateResponse),
+                trim($this->fullChainFormatter->format($certificateResponse)),
+                trim($this->keyPairFormatter->format($certificateResponse)),
             ]
-        );
+        ).self::SEPARATOR;
     }
 }
