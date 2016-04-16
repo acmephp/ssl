@@ -12,8 +12,8 @@
 namespace AcmePhp\Ssl\Exception;
 
 /**
- * @author Jérémy Derussé <jeremy@derusse.com>
+ * @author Titouan Galopin <galopintitouan@gmail.com>
  */
-class CertificateParsingException extends ParsingException
+class KeyParsingException extends ParsingException
 {
 }
