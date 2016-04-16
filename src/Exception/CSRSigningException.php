@@ -14,6 +14,6 @@ namespace AcmePhp\Ssl\Exception;
 /**
  * @author Jérémy Derussé <jeremy@derusse.com>
  */
-class CSRSigninException extends AcmeSslException
+class CSRSigningException extends SigningException
 {
 }
