@@ -22,6 +22,7 @@ class ParsedCertificate
 {
     /** @var Certificate */
     private $source;
+
     /** @var string */
     private $subject;
 

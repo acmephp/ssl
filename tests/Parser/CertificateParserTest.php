@@ -9,10 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace AcmePhp\Ssl\Tests\Factory;
+namespace AcmePhp\Ssl\Tests\Parser;
 
 use AcmePhp\Ssl\Certificate;
-use AcmePhp\Ssl\KeyPair;
 use AcmePhp\Ssl\ParsedCertificate;
 use AcmePhp\Ssl\Parser\CertificateParser;
 
@@ -36,7 +35,7 @@ class CertificateParserTest extends \PHPUnit_Framework_TestCase
         $this->service->parse(new Certificate('Not a cert'));
     }
 
-    public function test parse returns instance of KeyPair()
+    public function test parse returns instance of ParsedCertificate()
     {
         $result = $this->service->parse(
             new Certificate(
