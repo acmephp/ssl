@@ -30,6 +30,7 @@ This library provides the following SSL entities representations:
 
 - **PrivateKey**: a private key
 - **PublicKey**: a public key
+- **ParsedKey**: data resulting of the decoding of a parsed key
 - **KeyPair**: a couple of public and private key
 - **Certificate**: a PEM certificate string (an encoded certificate)
 - **CertificateChain**: chain of certificates
@@ -50,16 +51,22 @@ for usage in other softwares (web servers, ...). They all implement the interfac
 - **KeyPairFormatter**: dump the private key used to request a certificate
 - **CombinedFormatter**: dump the full chain of a certificate with the private key
 
-### KeyPairGenerator
+### Generators
 
-The `AcmePhp\Ssl\Generator\KeyPairGenerator` let you create `KeyPair` entites 
-using OpenSSL functions.
+Generators are under `AcmePhp\Ssl\Generator` namespace.
 
-### CertificateParser
+- **KeyPairGenerator** let you create `KeyPair` entites using OpenSSL functions
 
-The `AcmePhp\Ssl\Parser\CertificateParser` parse certificates (**Certificate**
-entities) and return **ParsedCertificate** entities.
+### Parsers
 
-### CertificateRequestSigner
+Parsers are under `AcmePhp\Ssl\Parser` namespace.
 
-The `AcmePhp\Ssl\Signer\CertificateRequestSigner` signs Certificate Requests.
+- **CertificateParser** parse certificates (**Certificate** entities) and return **ParsedCertificate** entities
+- **KeyParser** parse keys (**PrivateKey or PublicKey** entities) and return **ParsedKey** entities
+
+### Signers
+
+Signers are under `AcmePhp\Ssl\Signer` namespace.
+
+- **CertificateRequestSigner** signs Certificate requests (CSR)
+- **DataSigner** signs custom data using a private key
