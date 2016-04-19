@@ -13,7 +13,7 @@ namespace AcmePhp\Ssl\Signer;
 
 use AcmePhp\Ssl\CertificateRequest;
 use AcmePhp\Ssl\DistinguishedName;
-use AcmePhp\Ssl\Exception\CSRSigninException;
+use AcmePhp\Ssl\Exception\CSRSigningException;
 use AcmePhp\Ssl\KeyPair;
 
 /**
@@ -26,21 +26,17 @@ class CertificateRequestSigner
     /**
      * Generate a CSR from the given distinguishedName and keyPair.
      *
-     * @param DistinguishedName $distinguishedName
-     * @param KeyPair           $keyPair
+     * @param CertificateRequest $certificateRequest
      *
      * @return string
      */
     public function signCertificateRequest(CertificateRequest $certificateRequest)
     {
         $csrObject = $this->createCsrWithSANsObject($certificateRequest);
-        if (!$csrObject) {
-            throw new CSRSigninException(
-                sprintf('OpenSSL CSR signing failed with error: %s', openssl_error_string())
-            );
-        }
 
-        openssl_csr_export($csrObject, $csrExport);
+        if (!$csrObject || !openssl_csr_export($csrObject, $csrExport)) {
+            throw new CSRSigningException(sprintf('OpenSSL CSR signing failed with error: %s', openssl_error_string()));
+        }
 
         return $csrExport;
     }
