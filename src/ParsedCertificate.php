@@ -65,9 +65,9 @@ class ParsedCertificate
         array $subjectAlternativeNames = []
     ) {
         Assert::stringNotEmpty($subject, __CLASS__.'::$subject expected a non empty string. Got: %s');
-        Assert::string($issuer, __CLASS__.'::$issuer expected a string. Got: %s');
-        Assert::boolean($selfSigned, __CLASS__.'::$selfSigned expected a boolean. Got: %s');
-        Assert::string($serialNumber, __CLASS__.'::$serialNumber expected a string. Got: %s');
+        Assert::nullOrString($issuer, __CLASS__.'::$issuer expected a string. Got: %s');
+        Assert::nullOrBoolean($selfSigned, __CLASS__.'::$selfSigned expected a boolean. Got: %s');
+        Assert::nullOrString($serialNumber, __CLASS__.'::$serialNumber expected a string. Got: %s');
         Assert::allStringNotEmpty(
             $subjectAlternativeNames,
             __CLASS__.'::$subjectAlternativeNames expected a array of non empty string. Got: %s'
