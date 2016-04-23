@@ -11,6 +11,8 @@
 
 namespace AcmePhp\Ssl;
 
+use AcmePhp\Ssl\Exception\KeyFormatException;
+
 /**
  * Represent a SSL Public key.
  *
@@ -23,6 +25,10 @@ class PublicKey extends Key
      */
     public function getResource()
     {
-        return openssl_pkey_get_public($this->keyPEM);
+        if (!$resource = openssl_pkey_get_public($this->keyPEM)) {
+            throw new KeyFormatException(sprintf('Fail to convert key into resource: %s', openssl_error_string()));
+        }
+
+        return $resource;
     }
 }

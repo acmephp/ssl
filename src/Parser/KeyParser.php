@@ -11,6 +11,7 @@
 
 namespace AcmePhp\Ssl\Parser;
 
+use AcmePhp\Ssl\Exception\KeyFormatException;
 use AcmePhp\Ssl\Exception\KeyParsingException;
 use AcmePhp\Ssl\Key;
 use AcmePhp\Ssl\ParsedKey;
@@ -31,8 +32,10 @@ class KeyParser
      */
     public function parse(Key $key)
     {
-        if (!$resource = $key->getResource()) {
-            throw new KeyParsingException('Fail to load resource for key');
+        try {
+            $resource = $key->getResource();
+        } catch (KeyFormatException $e) {
+            throw new KeyParsingException('Fail to load resource for key', 0, $e);
         }
 
         $rawData = openssl_pkey_get_details($resource);

@@ -43,6 +43,14 @@ class KeyPairGenerator
                 'private_key_bits' => $keySize,
             ]
         );
+        if (!$key) {
+            throw new KeyPairGenerationException(
+                sprintf(
+                    'OpenSSL key creation failed during generation with error: %s',
+                    openssl_error_string()
+                )
+            );
+        }
 
         if (!openssl_pkey_export($key, $privateKey)) {
             throw new KeyPairGenerationException(
@@ -54,6 +62,14 @@ class KeyPairGenerator
         }
 
         $details = openssl_pkey_get_details($key);
+        if (!$details) {
+            throw new KeyPairGenerationException(
+                sprintf(
+                    'OpenSSL key parsing failed during generation with error: %s',
+                    openssl_error_string()
+                )
+            );
+        }
 
         return new KeyPair(
             new PublicKey($details['key']),

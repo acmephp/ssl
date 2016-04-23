@@ -14,7 +14,6 @@ namespace AcmePhp\Ssl\Signer;
 use AcmePhp\Ssl\CertificateRequest;
 use AcmePhp\Ssl\DistinguishedName;
 use AcmePhp\Ssl\Exception\CSRSigningException;
-use AcmePhp\Ssl\KeyPair;
 
 /**
  * Provide tools to sign certificate request.
@@ -81,7 +80,7 @@ EOL;
 
             $resource = $certificateRequest->getKeyPair()->getPrivateKey()->getResource();
 
-            return openssl_csr_new(
+            $csr = openssl_csr_new(
                 $this->getCSRPayload($distinguishedName),
                 $resource,
                 [
@@ -89,6 +88,14 @@ EOL;
                     'config'     => $sslConfigFile,
                 ]
             );
+
+            if (!$csr) {
+                throw new CSRSigningException(
+                    sprintf('OpenSSL CSR signing failed with error: %s', openssl_error_string())
+                );
+            }
+
+            return $csr;
         } finally {
             unlink($sslConfigFile);
         }
