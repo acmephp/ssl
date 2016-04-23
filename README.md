@@ -39,18 +39,6 @@ This library provides the following SSL entities representations:
 - **CertificateRequest**: required data used to request a certificate
 - **CertificateResponse**: the result of a certificate request
 
-### Formatters
-
-Formatters let you combine in different ways certificates in order to build certificate files 
-for usage in other softwares (web servers, ...). They all implement the interface
-`AcmePhp\Ssl\Formatter\FormatterInterface`.
-
-- **CertificateFormatter**: most basic formatter, simply dump a certificate as PEM
-- **IssuerChainFormatter**: dump the issuer certificate chain as PEM
-- **FullChainFormatter**: dump the full chain (issuer certificate + your certificate) as PEM
-- **KeyPairFormatter**: dump the private key used to request a certificate
-- **CombinedFormatter**: dump the full chain of a certificate with the private key
-
 ### Generators
 
 Generators are under `AcmePhp\Ssl\Generator` namespace.
