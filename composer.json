@@ -1,6 +1,6 @@
 {
     "name": "acmephp/ssl",
-    "description": "Tools to manipulate certificates.",
+    "description": "PHP wrapper around OpenSSL extension providing SSL encoding, decoding, parsing and signing features",
     "type": "library",
     "license": "MIT",
     "homepage": "https://github.com/acmephp/ssl",
