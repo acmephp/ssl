@@ -2,23 +2,28 @@ language: php
 
 sudo: false
 
+branches:
+    only:
+        - master
+
 cache:
-  directories:
-    - $HOME/.composer/cache/files
+    directories:
+        - $HOME/.composer/cache/files
 
 matrix:
-  include:
-    - php: 5.5
-    - php: 5.6
-    - php: 7.0
-    - php: 7.0
-      env: COMPOSER_FLAGS='--prefer-lowest --prefer-stable'
-    - php: hhvm
+    include:
+        - php: 5.5
+        - php: 5.6
+        - php: 7.0
+        - php: 7.0
+          env: COMPOSER_FLAGS='--prefer-lowest'
+        - php: hhvm
 
-before_install:
-  - if [[ $TRAVIS_PHP_VERSION != hhvm ]]; then phpenv config-rm xdebug.ini; fi;
-  - composer self-update
+before_install: if [[ $TRAVIS_PHP_VERSION != hhvm ]]; then phpenv config-rm xdebug.ini; fi;
 
-install: composer update $COMPOSER_FLAGS --prefer-dist --no-interaction
+install: composer update --prefer-dist --no-interaction $COMPOSER_FLAGS
 
 script: vendor/bin/phpunit
+
+notifications:
+    email: false
