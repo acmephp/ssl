@@ -32,6 +32,7 @@ class CertificateParser
     public function parse(Certificate $certificate)
     {
         $rawData = openssl_x509_parse($certificate->getPEM());
+
         if (!$rawData) {
             throw new CertificateParsingException(
                 sprintf('Fail to parse certificate with error: %s', openssl_error_string())
@@ -55,6 +56,7 @@ class CertificateParser
         }
 
         $subjectAlternativeName = [];
+
         if (isset($rawData['extensions']['subjectAltName'])) {
             $subjectAlternativeName = array_map(
                 function ($item) {

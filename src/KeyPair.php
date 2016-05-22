@@ -18,14 +18,10 @@ namespace AcmePhp\Ssl;
  */
 class KeyPair
 {
-    /**
-     * @var PublicKey
-     */
+    /** @var PublicKey */
     private $publicKey;
 
-    /**
-     * @var PrivateKey
-     */
+    /** @var PrivateKey */
     private $privateKey;
 
     /**

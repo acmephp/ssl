@@ -35,7 +35,7 @@ class KeyPairGenerator
      */
     public function generateKeyPair($keySize = 4096)
     {
-        Assert::integer($keySize, __METHOD__.'::$keySize should be an integer. Got:%s');
+        Assert::integer($keySize, __METHOD__.'::$keySize should be an integer. Got: %s');
 
         $key = openssl_pkey_new(
             [
@@ -43,6 +43,7 @@ class KeyPairGenerator
                 'private_key_bits' => $keySize,
             ]
         );
+
         if (!$key) {
             throw new KeyPairGenerationException(
                 sprintf(
@@ -62,6 +63,7 @@ class KeyPairGenerator
         }
 
         $details = openssl_pkey_get_details($key);
+
         if (!$details) {
             throw new KeyPairGenerationException(
                 sprintf(

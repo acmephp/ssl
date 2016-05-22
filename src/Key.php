@@ -20,9 +20,7 @@ use Webmozart\Assert\Assert;
  */
 abstract class Key
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $keyPEM;
 
     /**

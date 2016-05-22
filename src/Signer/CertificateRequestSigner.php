@@ -68,6 +68,7 @@ EOL;
             [$distinguishedName->getCommonName()],
             $distinguishedName->getSubjectAlternativeNames()
         );
+
         foreach (array_values($domains) as $index => $domain) {
             $sslConfigDomains[] = 'DNS.'.($index + 1).' = '.$domain;
         }
