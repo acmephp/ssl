@@ -4,84 +4,94 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Acme PHP SSL</title>
+        <title></title>
 
-        <link rel="stylesheet" href="https://github.com/acmephp/ssl/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://github.com/acmephp/ssl/css/font-awesome.min.css">
-        <link rel="stylesheet" href="https://github.com/acmephp/ssl/css/highlight.tomorrow-night.css">
-        <link rel="stylesheet" href="https://github.com/acmephp/ssl/css/main.css">
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/css/highlight.dark.css">
+        <link rel="stylesheet" href="/css/main.css">
     </head>
     <body>
 
         <header class="navbar navbar-default navbar-fixed-top">
 
-            <a class="navbar-brand" href="https://github.com/acmephp/ssl/">
-                Acme PHP SSL
+            <a class="navbar-brand" href="/">
+                The title
                 <small class="hidden-xs hidden-sm">
-                    PHP wrapper around OpenSSL extension providing SSL encoding, decoding, parsing and signing features
+                    This is the default subtitle!
                 </small>
             </a>
 
-                            <a href="https://github.com/acmephp/ssl">
-                    <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
-                </a>
             
         </header>
 
-        <main class="container-fluid">
+        <main class="container">
             <div class="row">
 
                 
-                    <nav id="sidebar" class="col-sm-3 col-lg-2" role="navigation">
-
-                                                    <p class="text-muted">
-                                Quick start
-                            </p>
-
-                            <ul class="nav nav-pills nav-stacked">
-                                                                    <li class="active">
-                                        <a href="https://github.com/acmephp/ssl/">
-                                            Introduction
-                                        </a>
-                                    </li>
-                                                                    <li class="">
-                                        <a href="https://github.com/acmephp/ssl/get-started.html">
-                                            Get started
-                                        </a>
-                                    </li>
-                                                            </ul>
-                        
-                    </nav>
-
-                
-                <section class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
+                <section id="content" class="col-sm-12">
                     <h1 id="acme-php-ssl">Acme PHP SSL</h1>
+<p><a href="https://travis-ci.org/acmephp/ssl"><img src="https://travis-ci.org/acmephp/ssl.svg?branch=master" alt="Build Status" /></a>
+<a href="https://styleci.io/repos/51226077"><img src="https://styleci.io/repos/51226077/shield" alt="StyleCI" /></a></p>
 <blockquote>
-<p>This library is a part of the <a href="https://github.com/acmephp">Acme PHP initiative</a>,
-aiming to intregrate <a href="https://github.com/acmephp">Let's Encrypt</a>
-in the PHP world at the application level.</p>
+<p>Note : this repository is in alpha stage.</p>
 </blockquote>
-<p>Acme PHP SSL is a PHP wrapper around OpenSSL extension providing SSL encoding,
-decoding, parsing and signing features.</p>
-<p>It uses the recommended security settings and let you interact in a OOP
-manner with SSL entities (public/private keys, certificates, ...).</p>
-<h2 id="why-use-acme-php-ssl">Why use Acme PHP SSL?</h2>
-<p>Acme PHP SSL provides various useful tools solving different use-cases:</p>
+<p>This PHP library is a wrapper around OpenSSL features to improve its usability and
+extendibility.</p>
+<p>It implements classes for the basic SSL entities (public and private keys, certificates,
+etc.) and let you generate, load and dump these entities.</p>
+<h2 id="installation">Installation</h2>
+<p>You will need OpenSSL extension.</p>
+<p>Use Composer:</p>
+<pre><code>composer require acmephp/ssl</code></pre>
+<h2 id="usage">Usage</h2>
+<h3 id="ssl-entities">SSL entities</h3>
+<p>This library provides the following SSL entities representations:</p>
 <ul>
-<li>generate public and private keys (see the <code>Generator\KeyPairGenerator</code>) ;</li>
-<li>sign data using a private key (see <code>Signer\DataSigner</code>) ;</li>
-<li>parse certificates to extract informations about them (see <code>Parser\CertificateParser</code>) ;</li>
+<li><strong>PrivateKey</strong>: a private key</li>
+<li><strong>PublicKey</strong>: a public key</li>
+<li><strong>ParsedKey</strong>: data resulting of the decoding of a parsed key</li>
+<li><strong>KeyPair</strong>: a couple of public and private key</li>
+<li><strong>Certificate</strong>: a PEM certificate string (an encoded certificate)</li>
+<li><strong>CertificateChain</strong>: chain of certificates</li>
+<li><strong>ParsedCertificate</strong>: data resulting of the decoding of a parsed certificate</li>
+<li><strong>DistinguishedName</strong>: required data used to generate a Certificate Request Signing</li>
+<li><strong>CertificateRequest</strong>: required data used to request a certificate</li>
+<li><strong>CertificateResponse</strong>: the result of a certificate request</li>
 </ul>
-<p>There are many more possible use-cases, don't hesitate to dig a bit deeper in the
-documentation to find out if this library can solve your problem!</p>
+<h3 id="generators">Generators</h3>
+<p>Generators are under <code>AcmePhp\Ssl\Generator</code> namespace.</p>
+<ul>
+<li><strong>KeyPairGenerator</strong> let you create <code>KeyPair</code> entites using OpenSSL functions</li>
+</ul>
+<h3 id="parsers">Parsers</h3>
+<p>Parsers are under <code>AcmePhp\Ssl\Parser</code> namespace.</p>
+<ul>
+<li><strong>CertificateParser</strong> parse certificates (<strong>Certificate</strong> entities) and return <strong>ParsedCertificate</strong> entities</li>
+<li><strong>KeyParser</strong> parse keys (<strong>PrivateKey or PublicKey</strong> entities) and return <strong>ParsedKey</strong> entities</li>
+</ul>
+<h3 id="signers">Signers</h3>
+<p>Signers are under <code>AcmePhp\Ssl\Signer</code> namespace.</p>
+<ul>
+<li><strong>CertificateRequestSigner</strong> signs Certificate requests (CSR)</li>
+<li><strong>DataSigner</strong> signs custom data using a private key</li>
+</ul>
                 </section>
 
             </div>
         </main>
 
+        <footer>
+            <div class="container">
+                <p class="text-muted">
+                    website generated with <a href="http://couscous.io" title="Markdown website generator">Couscous</a>
+                </p>
+            </div>
+        </footer>
+
         <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-        <script src="//yandex.st/highlightjs/7.5/highlight.min.js"></script>
+        <script src="//yastatic.net/highlightjs/8.2/highlight.min.js"></script>
 
         <script>
             $(function() {
