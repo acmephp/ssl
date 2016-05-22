@@ -40,7 +40,7 @@ class ParsedKey
     /**
      * @param Key    $source
      * @param string $key
-     * @param string $bits
+     * @param int    $bits
      * @param int    $type
      * @param array  $details
      */
