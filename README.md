@@ -1,60 +1,49 @@
 Acme PHP SSL
 ============
 
-[![Build Status](https://travis-ci.org/acmephp/ssl.svg?branch=master)](https://travis-ci.org/acmephp/ssl)
+[![Build Status](https://img.shields.io/travis/acmephp/ssl/master.svg?style=flat-square)](https://travis-ci.org/acmephp/ssl)
+[![Quality Score](https://img.shields.io/scrutinizer/g/acmephp/ssl.svg?style=flat-square)](https://scrutinizer-ci.com/g/acmephp/ssl)
 [![StyleCI](https://styleci.io/repos/51226077/shield)](https://styleci.io/repos/51226077)
+[![Packagist Version](https://img.shields.io/packagist/v/acmephp/ssl.svg?style=flat-square)](https://packagist.org/packages/acmephp/ssl)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 
-> Note : this repository is in alpha stage.
+> Note : this repository is in alpha stage but only to follow the same versionning as the CLI
+> client. This library's API won't change in the near future (we don't want BC breaks now).
 
-This PHP library is a wrapper around OpenSSL features to improve its usability and
-extendibility.
+> This library is a part of the [Acme PHP initiative](https://github.com/acmephp),
+> aiming to intregrate [Let's Encrypt](https://github.com/acmephp)
+> in the PHP world at the application level.
 
-It implements classes for the basic SSL entities (public and private keys, certificates,
-etc.) and let you generate, load and dump these entities.
+Acme PHP SSL is a PHP wrapper around OpenSSL extension providing SSL encoding,
+decoding, parsing and signing features.
 
-## Installation
+It uses the recommended security settings and let you interact in a OOP
+manner with SSL entities (public/private keys, certificates, ...).
 
-You will need OpenSSL extension.
+## Why use Acme PHP SSL?
 
-Use Composer:
+Acme PHP SSL provides various useful tools solving different use-cases:
+- generate public and private keys (see the `Generator\KeyPairGenerator`) ;
+- sign data using a private key (see `Signer\DataSigner`) ;
+- parse certificates to extract informations about them (see `Parser\CertificateParser`) ;
+
+There are many more possible use-cases, don't hesitate to dig a bit deeper in the
+documentation to find out if this library can solve your problem!
+
+## Documentation
+
+Read the official [Acme PHP SSL documentation](https://acmephp.github.io/ssl/).
+
+## Launch the Test suite
+
+In the Acme PHP SSL root directory:
 
 ```
-composer require acmephp/ssl
+# Get the dev dependencies
+composer update
+
+# Run the tests
+vendor/bin/phpunit
 ```
 
-## Usage
-
-### SSL entities
-
-This library provides the following SSL entities representations:
-
-- **PrivateKey**: a private key
-- **PublicKey**: a public key
-- **ParsedKey**: data resulting of the decoding of a parsed key
-- **KeyPair**: a couple of public and private key
-- **Certificate**: a PEM certificate string (an encoded certificate)
-- **CertificateChain**: chain of certificates
-- **ParsedCertificate**: data resulting of the decoding of a parsed certificate
-- **DistinguishedName**: required data used to generate a Certificate Request Signing
-- **CertificateRequest**: required data used to request a certificate
-- **CertificateResponse**: the result of a certificate request
-
-### Generators
-
-Generators are under `AcmePhp\Ssl\Generator` namespace.
-
-- **KeyPairGenerator** let you create `KeyPair` entites using OpenSSL functions
-
-### Parsers
-
-Parsers are under `AcmePhp\Ssl\Parser` namespace.
-
-- **CertificateParser** parse certificates (**Certificate** entities) and return **ParsedCertificate** entities
-- **KeyParser** parse keys (**PrivateKey or PublicKey** entities) and return **ParsedKey** entities
-
-### Signers
-
-Signers are under `AcmePhp\Ssl\Signer` namespace.
-
-- **CertificateRequestSigner** signs Certificate requests (CSR)
-- **DataSigner** signs custom data using a private key
+A JUnit build is created when the test suite is ran.

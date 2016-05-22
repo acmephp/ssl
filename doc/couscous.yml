@@ -3,7 +3,7 @@ subTitle: PHP wrapper around OpenSSL extension providing SSL encoding, decoding,
 github:
     user: acmephp
     repo: ssl
-baseUrl: https://github.com/acmephp/ssl
+baseUrl: https://acmephp.github.io/ssl
 template:
     url: https://github.com/CouscousPHP/Template-Dark
     index: introduction.md
