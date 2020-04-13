@@ -28,7 +28,7 @@ documentation to find out if this library can solve your problem!
 
 ## Documentation
 
-Read the official [Acme PHP SSL documentation](https://acmephp.github.io/acmephp/ssl/introduction.html).
+Read the official [Acme PHP SSL documentation](https://acmephp.github.io/documentation/ssl/introduction.html).
 
 ## Launch the Test suite
 
